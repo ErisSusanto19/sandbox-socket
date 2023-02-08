@@ -11,34 +11,14 @@ import { fetchChat, fetchListExChats } from "../store/actionCreator";
 
 const Chat = () => {
     const [visible, setVisible] = useState(false);
-    // const [rooms, setRooms] = useState([]);
 
     const dispatch = useDispatch()
-
-    const exchats = useSelector(state => state.exchats)
-    console.log(exchats, '<<<<< exchats from screen chat');
 
     const chats = useSelector(state => state.chats)
     console.log(chats, '<<<< chats from screen chat');
 
-    // useLayoutEffect(() => {
-        // dispatch(fetchChat(60))
-        // dispatch(fetchListExChats())
-    //     function fetchPrivat() {
-    //         fetch("https://4cba-180-252-39-206.ap.ngrok.io")
-    //             .then((res) => res.json())
-    //             .then((data) => setRooms(data))
-    //             .catch((err) => console.error(err));
-    //     }
-    //     fetchPrivat();
-    // }, []);
-
     useEffect(() => {
-        // socket.on("roomsList", (rooms) => {
-        //     setRooms(rooms)
-        // });
-        // dispatch(fetchListExChats())
-        dispatch(fetchChat(60))
+        dispatch(fetchChat(1))
     }, []);
 
     const handleCreateGroup = () => setVisible(true);
@@ -56,11 +36,11 @@ const Chat = () => {
             </View>
 
             <View style={styles.chatlistContainer}>
-                {rooms.length > 0 ? (
+                {chats.length > 0 ? (
                     <FlatList
-                        data={rooms}
+                        data={chats}
                         renderItem={({ item }) => <ChatComponent item={item} />}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item._id}
                     />
                 ) : (
                     <View style={styles.chatemptyContainer}>

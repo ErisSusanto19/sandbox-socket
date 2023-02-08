@@ -4,55 +4,50 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MessageComponent from "../components/MessageComponent";
 import { styles } from "../assets/style";
 import socket from "../assets/socket";
+import { useDispatch, useSelector } from "react-redux";
+import { createMessage, fetchMessage } from "../store/actionCreator";
 
 const Messaging = ({ route, navigation }) => {
-    const [chatMessages, setChatMessages] = useState([]);
+    // const [chatMessages, setChatMessages] = useState([]);
     const [message, setMessage] = useState("");
-    const [user, setUser] = useState("");
-    const { name, id } = route.params;
+    // const [senderId, setSenderId] = useState("");
+    const { chatId, curentUserId } = route.params;
 
-    const getUsername = async () => {
-        try {
-            const value = await AsyncStorage.getItem("username");
-            if (value !== null) {
-                setUser(value);
-            }
-        } catch (e) {
-            console.error("Error while loading username!");
-        }
-    };
+    const dispatch = useDispatch()
+    const messages = useSelector(state => state.messages)
+    console.log(messages, '<<<< from screen massaging');
 
     const handleNewMessage = () => {
-        const hour =
-            new Date().getHours() < 10
-                ? `0${new Date().getHours()}`
-                : `${new Date().getHours()}`;
+        // const hour =
+        //     new Date().getHours() < 10
+        //         ? `0${new Date().getHours()}`
+        //         : `${new Date().getHours()}`;
 
-        const mins =
-            new Date().getMinutes() < 10
-                ? `0${new Date().getMinutes()}`
-                : `${new Date().getMinutes()}`;
+        // const mins =
+        //     new Date().getMinutes() < 10
+        //         ? `0${new Date().getMinutes()}`
+        //         : `${new Date().getMinutes()}`;
 
-        if (user) {
-            socket.emit("newMessage", {
-                message,
-                room_id: id,
-                user,
-                timestamp: { hour, mins },
-            });
+        if (chatId) {
+            // socket.emit("newMessage", {
+            //     chatId
+            //     senderId,
+            //     message
+            // });
+            dispatch(createMessage({chatId, senderId: curentUserId, message}))
         }
     };
 
-    useLayoutEffect(() => {
-        navigation.setOptions({ title: name });
-        getUsername();
-        socket.emit("findRoom", id);
-        socket.on("foundRoom", (roomChats) => setChatMessages(roomChats));
-    }, []);
+    // useLayoutEffect(() => {
+    //     navigation.setOptions({ title: name });
+    //     getUsername();
+    //     socket.emit("findRoom", id);
+    //     socket.on("foundRoom", (roomChats) => setChatMessages(roomChats));
+    // }, []);
     
     useEffect(() => {
-        socket.on("foundRoom", (roomChats) => setChatMessages(roomChats));
-    }, [socket])
+        dispatch(fetchMessage("63e31c5f63c1ae2a11aec249"))
+    }, [])
 
     return (
         <View style={styles.messagingscreen}>
@@ -62,13 +57,13 @@ const Messaging = ({ route, navigation }) => {
                     { paddingVertical: 15, paddingHorizontal: 10 },
                 ]}
             >
-                {chatMessages[0] ? (
+                {messages[0] ? (
                     <FlatList
-                        data={chatMessages}
+                        data={messages}
                         renderItem={({ item }) => (
-                            <MessageComponent item={item} user={user} />
+                            <MessageComponent item={item} curentUserId={curentUserId} />
                         )}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item._id}
                     />
                 ) : (
                     ""

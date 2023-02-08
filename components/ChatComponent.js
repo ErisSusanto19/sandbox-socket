@@ -7,16 +7,16 @@ import { styles } from "../assets/style";
 const ChatComponent = ({ item }) => {
     console.log(item, '<<<< from chat');
     const navigation = useNavigation();
-    const [messages, setMessages] = useState({});
+    // const [messages, setMessages] = useState({});
 
-    useLayoutEffect(() => {
-        setMessages(item.messages[item.messages.length - 1]);
-    }, []);
+    // useLayoutEffect(() => {
+    //     setMessages(item.messages[item.messages.length - 1]);
+    // }, []);
 
     const handleNavigation = () => {
         navigation.navigate("Messaging", {
-            id: item.id,
-            name: item.name,
+            chatId: item._id,
+            curentUserId: item.users[0]
         });
     };
 
@@ -31,17 +31,17 @@ const ChatComponent = ({ item }) => {
 
             <View style={styles.crightContainer}>
                 <View>
-                    <Text style={styles.cusername}>{item.name}</Text>
+                    <Text style={styles.cusername}>{item._id}</Text>
 
-                    <Text style={styles.cmessage}>
+                    {/* <Text style={styles.cmessage}>
                         {messages?.text ? messages.text : "Tap to start chatting"}
-                    </Text>
+                    </Text> */}
                 </View>
-                <View>
+                {/* <View>
                     <Text style={styles.ctime}>
                         {messages?.time ? messages.time : "now"}
                     </Text>
-                </View>
+                </View> */}
             </View>
         </Pressable>
     );

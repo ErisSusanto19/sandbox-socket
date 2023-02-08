@@ -1,23 +1,14 @@
-import { CREATE_CHAT, CREATE_EXCHATS, FETCH_CHAT, FETCH_CHAT_BY_ID, FETCH_LISTEXCHATS } from "./actionType";
+import { CREATE_CHAT, CREATE_MESSAGE, FETCH_CHAT, FETCH_MESSAGE, FETCH_CHAT_BY_ID, FETCH_MESSAGE_BY_ID } from "./actionType";
 
 const initialState = {
-    exchats: [],
     chats: [],
-    chat: {}
+    chat: {},
+    messages: [],
+    message: {}
 }
 
 function rootReducer(state = initialState, action) {
     switch (action.type) {
-        case FETCH_LISTEXCHATS:
-            return {
-                ...state,
-                exchats: action.payload
-            }
-        case CREATE_EXCHATS:
-            return {
-                ...state,
-                exchats: state.exchats.concat(action.payload)
-            }
         case FETCH_CHAT:
             return {
                 ...state,
@@ -32,6 +23,21 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 chat: action.payload
+            }
+        case FETCH_MESSAGE:
+            return {
+                ...state,
+                messages: action.payload
+            }
+        case CREATE_MESSAGE:
+            return {
+                ...state,
+                messages: state.messages.concat(action.payload)
+            }
+        case FETCH_MESSAGE_BY_ID:
+            return {
+                ...state,
+                message: action.payload
             }
         default:
             return state
