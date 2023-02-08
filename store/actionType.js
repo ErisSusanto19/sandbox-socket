@@ -1,0 +1,7 @@
+export const FETCH_CHAT = "chats/fetchAll"
+export const CREATE_CHAT = "chats/create"
+export const FETCH_CHAT_BY_ID = "chats/fetchById"
+export const UPDATE_CHAT = "chats/update"
+export const FETCH_LISTEXCHATS = "exchats/fetchAll"
+export const CREATE_EXCHATS = "exchats/create"
+// export const FETCH_CATEGORIES_BY_ID = "categories/fetchById"
